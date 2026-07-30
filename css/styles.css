@@ -1,0 +1,559 @@
+/* ==========================================================================
+   STYLES
+   Josh Puangco | IT Portfolio
+   Layout and components not already covered by design-tokens.css.
+   Mobile-first: base rules are the phone layout, @media (min-width: 768px)
+   blocks add the desktop layout. Loaded after design-tokens.css.
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Hover-lift stability wrapper
+   .btn-primary and .project-card lift with translateY on :hover (defined in
+   design-tokens.css). Since that moves the very element whose geometry
+   decides :hover, a cursor resting near the edge the lift moves away from
+   can flicker in and out of hover. These wrappers give the lift a stable,
+   never-moving hit area: the wrapper drives the lift on its child instead
+   of the child triggering it on itself.
+   -------------------------------------------------------------------- */
+
+.btn-primary:hover,
+.btn-primary:active {
+  transform: none;
+}
+
+.btn-hover-wrap {
+  display: flex;
+}
+
+.btn-hover-wrap .btn-primary {
+  width: 100%;
+}
+
+.btn-hover-wrap:hover .btn-primary {
+  transform: translateY(-2px);
+}
+
+.btn-hover-wrap:active .btn-primary {
+  transform: translateY(0) scale(0.98);
+}
+
+/* --------------------------------------------------------------------------
+   Container
+   -------------------------------------------------------------------- */
+
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+.section-padding {
+  padding: var(--space-8) 0;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding: var(--space-9) 0;
+  }
+}
+
+.section-heading {
+  margin-bottom: var(--space-5);
+}
+
+.section-intro {
+  margin-bottom: var(--space-5);
+}
+
+main p + p {
+  margin-top: var(--space-4);
+}
+
+/* ==========================================================================
+   HOME PAGE NAV
+   ========================================================================== */
+
+.site-header {
+  border-bottom: 2px solid var(--color-border-strong);
+}
+
+.nav-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) 0;
+}
+
+.logo {
+  font-size: var(--text-heading);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.logo:hover {
+  color: var(--color-link-hover);
+}
+
+/* Hamburger toggle — mobile only */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-toggle__bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-text-primary);
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+.nav-toggle--open .nav-toggle__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle--open .nav-toggle__bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle--open .nav-toggle__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile menu panel — collapsed by default, opens below the nav row */
+.nav-menu {
+  flex-basis: 100%;
+  order: 3;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-base), opacity var(--transition-base);
+}
+
+.nav-menu--open {
+  max-height: 400px;
+  opacity: 1;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-list li {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-list .nav-link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .nav-toggle {
+    display: none;
+  }
+
+  .nav-menu {
+    flex-basis: auto;
+    order: 0;
+    max-height: none;
+    opacity: 1;
+    overflow: visible;
+  }
+
+  .nav-list {
+    flex-direction: row;
+    gap: var(--space-6);
+  }
+
+  .nav-list li {
+    border-bottom: none;
+  }
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-5);
+}
+
+.hero-eyebrow {
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-caption);
+}
+
+.hero-content h1 {
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.hero-role {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+.hero-cta {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .hero-inner {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .hero-content {
+    max-width: 560px;
+  }
+
+  .hero-cta {
+    width: auto;
+  }
+}
+
+/* ==========================================================================
+   ABOUT ME
+   ========================================================================== */
+
+.about-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.about-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.skills-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.skills-list li {
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 768px) {
+  .about-inner {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-7);
+  }
+
+  .about-image {
+    width: 320px;
+    flex-shrink: 0;
+  }
+
+  .about-content {
+    flex: 1;
+  }
+}
+
+/* ==========================================================================
+   WORK / PROJECTS
+   ========================================================================== */
+
+.project-card-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card-wrap .project-card {
+  flex: 1;
+}
+
+.project-card:hover,
+.project-card:active {
+  transform: none;
+}
+
+.project-card-wrap:hover .project-card {
+  transform: translateY(-6px);
+}
+
+.project-card-wrap:active .project-card {
+  transform: translateY(-2px) scale(0.99);
+}
+
+.project-card__image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.project-card__tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.project-card__cta {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.project-card--empty {
+  display: none;
+  text-align: center;
+  padding: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .project-card__image {
+    height: 170px;
+  }
+
+  .project-card--empty {
+    display: flex;
+  }
+}
+
+/* ==========================================================================
+   CONTACT
+   ========================================================================== */
+
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.contact-link:hover {
+  color: var(--color-link);
+}
+
+.contact-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-icon-default);
+  flex-shrink: 0;
+}
+
+.contact-note {
+  margin-top: var(--space-5);
+  font-style: italic;
+  font-size: var(--text-caption);
+  color: var(--color-text-caption);
+}
+
+@media (min-width: 768px) {
+  .contact-list {
+    flex-direction: row;
+    gap: var(--space-5);
+  }
+}
+
+/* ==========================================================================
+   HOME FOOTER
+   ========================================================================== */
+
+.site-footer {
+  margin-top: var(--space-6);
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+  padding: var(--space-6) 0;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-5);
+}
+
+.footer-copy {
+  font-size: var(--text-caption);
+  color: var(--color-text-caption);
+}
+
+@media (min-width: 768px) {
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+/* ==========================================================================
+   PROJECT PAGE: BREADCRUMB
+   ========================================================================== */
+
+.breadcrumb-bar {
+  border-bottom: 2px solid var(--color-border-strong);
+}
+
+.breadcrumb-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) 0;
+}
+
+.breadcrumb-current {
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.breadcrumb-sep {
+  color: var(--color-text-caption);
+}
+
+@media (min-width: 768px) {
+  .breadcrumb-inner {
+    padding: var(--space-5) 0;
+  }
+}
+
+/* ==========================================================================
+   PROJECT PAGE: PROJECT HEADER
+   ========================================================================== */
+
+.project-summary {
+  margin-top: var(--space-3);
+  color: var(--color-text-secondary);
+}
+
+.project-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.project-actions .btn-secondary,
+.project-actions .btn-hover-wrap {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .project-actions {
+    flex-direction: row;
+  }
+
+  .project-actions .btn-secondary,
+  .project-actions .btn-hover-wrap {
+    width: auto;
+  }
+}
+
+/* ==========================================================================
+   PROJECT PAGE: SCREENSHOT
+   ========================================================================== */
+
+.screenshot-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .screenshot-image {
+    aspect-ratio: 16 / 8;
+  }
+}
+
+/* ==========================================================================
+   PROJECT PAGE: SKILLS & TOOLS
+   ========================================================================== */
+
+.tag-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .tag-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+}
+
+/* ==========================================================================
+   PROJECT PAGE: WHAT I LEARNED
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  .learned {
+    border-bottom: 2px solid var(--color-border-strong);
+    padding-bottom: var(--space-7);
+  }
+}
+
+/* ==========================================================================
+   PROJECT PAGE: FOOTER
+   ========================================================================== */
+
+.project-footer {
+  padding: var(--space-6) 0 var(--space-8);
+}

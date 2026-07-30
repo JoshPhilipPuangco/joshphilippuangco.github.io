@@ -1,0 +1,538 @@
+/* ==========================================================================
+   DESIGN TOKENS
+   Josh Puangco | IT Portfolio
+   Step 7: Design System
+
+   This file holds every color, font, spacing, radius, and shadow value the
+   site uses, plus the shared component styles built from those values
+   (buttons, nav links, tags, project cards). Every gap, padding, border,
+   and color anywhere in the site should trace back to a variable in this
+   file. Link this stylesheet first in the <head>, before any page-specific
+   CSS, so page styles can use these variables with var().
+
+   Reference used: Design-Systems-Notes.md (tokens, 60-30-10 color rule,
+   type scale, spacing scale, component states), Module 2.md (CSS layout,
+   :root + var() pattern, grid gap), Module 4.md (borders, radius, shadow,
+   gradient patterns), the four approved wireframes, and Site-Proposal.md.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+:root {
+
+  /* ------------------------------------------------------------------ *
+   * 1. COLOR
+   *
+   * The 60-30-10 rule: neutral covers 60% of the screen (backgrounds and
+   * surfaces), the brand color covers 30% (structure: nav, links, icons,
+   * headings stay neutral text but brand handles anything "linked"), and
+   * the accent covers 10% (one color, saved for the single most important
+   * action on each page).
+   *
+   * Every text color below was checked against a white/near-white
+   * background with the WebAIM contrast formula. Ratios that need to meet
+   * WCAG AA (4.5:1 minimum for normal text) are noted next to each one.
+   * neutral-500 is the one color in this file that does NOT meet 4.5:1
+   * (it sits at 2.99:1). That is on purpose: it is reserved for disabled
+   * controls and decorative icon strokes only, never for text someone
+   * needs to read. Disabled controls are exempt from the AA contrast
+   * requirement.
+   * ------------------------------------------------------------------ */
+
+  /* Neutral ramp — 60% role: backgrounds, surfaces, borders, most text */
+  --neutral-0: #ffffff;
+  --neutral-50: #f7f8fa;
+  --neutral-100: #eef0f3;
+  --neutral-200: #dde1e6;
+  --neutral-300: #c7ccd3;
+  --neutral-500: #8a919c; /* 2.99:1 — disabled text/icons ONLY, not for reading */
+  --neutral-600: #5b6270; /* 5.77:1 — captions, tags, footer text */
+  --neutral-700: #4b525c; /* 7.43:1 — secondary body text */
+  --neutral-900: #1a1d22; /* 15.9:1 — primary text and headings */
+
+  /* Brand ramp ("Ink Blue") — 30% role: structure, links, icons, nav */
+  --brand-50: #eaf0fb; /* tint background — used behind one section only, see .section--tinted */
+  --brand-100: #cfe0f7; /* hover tint — used as the secondary button's hover background */
+  --brand-300: #7fa8e0;
+  --brand-500: #2c5aa0; /* 6.42:1 — links, icon strokes, base brand color */
+  --brand-700: #1d3e73; /* 9.94:1 — link hover, stronger emphasis */
+  --brand-900: #12233f; /* darkest navy, used sparingly for max contrast */
+
+  /* Accent ("Amber") — 10% role: reserved for ONE primary action per page.
+     Carried over directly from the exact accent/text pairing taught in
+     Module 2's own button example (background #f4a100, text #1b1b2a),
+     so this is the same accent Josh already learned to build. */
+  --accent-default: #f4a100; /* 8.04:1 with text-on-accent below */
+  --accent-hover: #d88f00; /* 6.35:1 with text-on-accent below */
+  --accent-active: #c28200; /* 5.24:1 with text-on-accent below */
+  --text-on-accent: #1b1b2a;
+
+  /* Semantic aliases — use THESE in component CSS, not the raw ramp steps.
+     If the palette ever changes, only this block needs to change. */
+  --color-bg: var(--neutral-50);
+  --color-surface: var(--neutral-0);
+  --color-surface-alt: var(--neutral-100);
+
+  --color-border: var(--neutral-200); /* standard hairline divider */
+  --color-border-strong: var(--neutral-900); /* the heavier 2px rule from the wireframe (nav, footer) */
+  --color-border-disabled: var(--neutral-300);
+
+  --color-text-primary: var(--neutral-900); /* headings, body copy */
+  --color-text-secondary: var(--neutral-700); /* supporting paragraphs, taglines */
+  --color-text-caption: var(--neutral-600); /* tags, footer text, small meta labels */
+  --color-text-disabled: var(--neutral-500); /* disabled controls only */
+
+  --color-link: var(--brand-500);
+  --color-link-hover: var(--brand-700);
+  --color-icon-default: var(--brand-500);
+  --color-icon-disabled: var(--neutral-500);
+
+  --color-accent-default: var(--accent-default);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
+  --color-accent-text: var(--text-on-accent);
+
+  --color-focus-ring: rgba(44, 90, 160, 0.35); /* brand-500 at low opacity */
+
+  /* ------------------------------------------------------------------ *
+   * 2. TYPE
+   *
+   * One typeface family (Inter), in three weights, so the whole site
+   * reads as one system. Sizes come from a Major Third scale (each step
+   * roughly 1.25x the last, base 16px), then were matched back against
+   * the real hero/heading/body sizes already approved in the four
+   * wireframes. Named by what they are used FOR, not by an abstract
+   * size code, so the name always tells you where to reach for it.
+   * ------------------------------------------------------------------ */
+
+  --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --text-caption: 13px; /* tags, nav links, footer text, small meta labels */
+  --text-body: 16px; /* every paragraph: bio, overview, "what I learned" */
+  --text-heading: 20px; /* every section heading, plus the hero role line */
+  --text-display-mobile: 39px; /* H1 on mobile: hero name, project title */
+  --text-display-desktop: 49px; /* H1 on desktop: hero name, project title */
+
+  --leading-tight: 1.1; /* display/hero text */
+  --leading-snug: 1.3; /* headings */
+  --leading-normal: 1.5; /* body copy and captions */
+
+  /* ------------------------------------------------------------------ *
+   * 3. SPACING
+   *
+   * An 8pt scale with 4px for tight spots, exactly as recommended in
+   * Design-Systems-Notes.md. Every gap, padding, and margin anywhere on
+   * the site should be one of these ten values, never a random number.
+   * ------------------------------------------------------------------ */
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 80px;
+  --space-10: 96px;
+
+  /* ------------------------------------------------------------------ *
+   * 4. RADIUS
+   * ------------------------------------------------------------------ */
+
+  --radius-sm: 6px;
+  --radius-md: 8px; /* buttons */
+  --radius-lg: 12px; /* cards */
+  --radius-xl: 18px; /* large image containers, the About Me headshot box */
+  --radius-pill: 999px; /* skill tags */
+
+  /* ------------------------------------------------------------------ *
+   * 5. SHADOW
+   *
+   * Always a large blur and a low-opacity color, never solid black
+   * (Module 4.md). The color used here is brand-900 at low opacity
+   * instead of plain black, which keeps every shadow tinted faintly
+   * toward the site's own brand color instead of a generic grey.
+   * ------------------------------------------------------------------ */
+
+  --shadow-sm: 0 4px 12px rgba(18, 35, 63, 0.08); /* resting card */
+  --shadow-md: 0 10px 30px rgba(18, 35, 63, 0.16); /* hovered card, lifted button */
+  --shadow-lg: 0 24px 60px rgba(18, 35, 63, 0.24); /* strong emphasis — used on .featured-image, the one large photo per page */
+
+  /* ------------------------------------------------------------------ *
+   * 6. TRANSITION
+   * ------------------------------------------------------------------ */
+
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+/* ==========================================================================
+   BASE RESET AND DEFAULTS
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-tight);
+  color: var(--color-text-primary);
+}
+
+/* H1: hero name (Home) and project title (Project page). Mobile-first,
+   then the bigger desktop size takes over at the 768px breakpoint. */
+h1 {
+  font-size: var(--text-display-mobile);
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: var(--text-display-desktop);
+  }
+}
+
+/* H2: every section heading ("About Me," "My Work," "Get In Touch,"
+   "Overview," "Skills & Tools Used") and the hero role line. */
+h2 {
+  font-size: var(--text-heading);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+p {
+  font-size: var(--text-body);
+  color: var(--color-text-secondary);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+/* Visible keyboard focus everywhere, not just on the mouse hover states
+   below (accessibility basics, one of the skills the site itself lists). */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   COMPONENTS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Primary Button
+   The one accent-filled action per page: "See My Work" (Home hero),
+   "View Code on GitHub" (Project page). Do not use this style twice on
+   the same screen; the accent color only means something if it stays
+   rare (the 10% rule).
+   -------------------------------------------------------------------- */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px; /* mobile: within the 44-64px tap target range */
+  padding: var(--space-4) var(--space-6);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-default);
+  color: var(--color-accent-text);
+  font-family: var(--font-family-base);
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background var(--transition-base), transform var(--transition-fast),
+    box-shadow var(--transition-base);
+}
+
+@media (min-width: 768px) {
+  .btn-primary {
+    min-height: 48px;
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+/* Default state is the block above (resting). */
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:active {
+  background: var(--color-accent-active);
+  transform: translateY(0) scale(0.98);
+  box-shadow: none;
+}
+
+.btn-primary:disabled,
+.btn-primary[aria-disabled="true"] {
+  background: var(--color-surface-alt);
+  color: var(--color-text-disabled);
+  border: 1.5px dashed var(--color-border-disabled);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   Secondary Button
+   Outline style, for lower-priority actions: "View Project" (Home card),
+   a live-site link once one exists. The wireframe's plain 2px solid
+   border becomes this component's real, styled default state.
+   -------------------------------------------------------------------- */
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: var(--space-4) var(--space-6);
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background var(--transition-base), border-color var(--transition-base),
+    color var(--transition-base), transform var(--transition-fast);
+}
+
+@media (min-width: 768px) {
+  .btn-secondary {
+    min-height: 48px;
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+.btn-secondary:hover {
+  background: var(--brand-100);
+  border-color: var(--color-link);
+  color: var(--color-link-hover);
+}
+
+.btn-secondary:active {
+  background: var(--neutral-200);
+  transform: scale(0.98);
+}
+
+/* Real example: the Project page's "Live link (coming soon)" box already
+   drawn this way in the wireframe (dashed border, muted grey label). */
+.btn-secondary:disabled,
+.btn-secondary[aria-disabled="true"] {
+  background: transparent;
+  color: var(--color-text-disabled);
+  border: 1.5px dashed var(--color-border-disabled);
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Nav Link
+   Home / About / Work / Contact, footer links, breadcrumb link,
+   "Back to top." No disabled state applies here; a nav link that cannot
+   be used should not be shown at all.
+   -------------------------------------------------------------------- */
+
+.nav-link {
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  padding: var(--space-2) 0;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--color-link);
+  border-bottom-color: var(--color-link);
+}
+
+.nav-link:active {
+  color: var(--color-link-hover);
+}
+
+/* Optional: marks whichever section is currently in view. Not one of the
+   four required states, just a small usability extra. */
+.nav-link--current {
+  color: var(--color-link);
+  border-bottom-color: var(--color-link);
+}
+
+/* --------------------------------------------------------------------------
+   Skill Tag / Pill
+   "HTML," "CSS," "Responsive Design," etc. Static content, not a
+   control, so it only ever needs one state.
+   -------------------------------------------------------------------- */
+
+.tag {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-caption);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-caption);
+  background: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Project Card
+   The Work/Projects grid item; the whole card links to the Project
+   page. The desktop wireframe's two empty "future project slot" boxes
+   become this component's real disabled state below.
+   -------------------------------------------------------------------- */
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--transition-base), box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand-300);
+}
+
+.project-card:active {
+  transform: translateY(-2px) scale(0.99);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Real example: an empty, not-yet-filled slot in the project grid. */
+.project-card--empty {
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  background: transparent;
+  border: 1.5px dashed var(--color-border-disabled);
+  box-shadow: none;
+  color: var(--color-text-disabled);
+  pointer-events: none;
+}
+
+.project-card--empty:hover,
+.project-card--empty:active {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--color-border-disabled);
+}
+
+/* --------------------------------------------------------------------------
+   Featured Image
+   The one large, important photo on a page: the About Me headshot on
+   Home, or the project screenshot on the Project page. There is only
+   one of these per page, so it gets the strongest shadow in the
+   system, the kind of lift a resting card or a default state never
+   gets.
+   -------------------------------------------------------------------- */
+
+.featured-image {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   Divider
+   The wireframe's dashed section rules become one plain hairline by
+   default. A second, brand-tinted dashed variant is available for a
+   single section (used sparingly, since restraint matters more than
+   decoration) as a small nod to network trace-lines, appropriate for a
+   Network Administration major's site.
+   -------------------------------------------------------------------- */
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.divider--strong {
+  border-top: 2px solid var(--color-border-strong); /* nav bottom rule, footer top rule */
+}
+
+.divider--signature {
+  border: none;
+  border-top: 1.5px dashed var(--brand-300);
+  max-width: 120px;
+}
+
+/* --------------------------------------------------------------------------
+   Tinted Section
+   A very light brand-tinted background, for ONE section only, most
+   likely Contact (the page's closing call-to-action). Gives that
+   section a quiet visual anchor without breaking the light, mostly
+   neutral palette. Apply this class to at most one section per page;
+   it stops meaning anything the moment every section has it.
+   -------------------------------------------------------------------- */
+
+.section--tinted {
+  background: var(--brand-50);
+}
+
+/* --------------------------------------------------------------------------
+   Grid gap
+   Matches Module 2's own responsive card-grid example exactly.
+   -------------------------------------------------------------------- */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-5); /* 24px, straight from Module 2.md's own example */
+}
+
+/* ==========================================================================
+   MOTION AND ACCESSIBILITY
+   Honor the "reduce motion" device setting (Module 6.md).
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
